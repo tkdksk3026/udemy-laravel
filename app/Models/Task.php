@@ -8,5 +8,15 @@ class Task extends Model
 {
     protected $fillable = [
         'task' ,
+        'due_date',
+    ];
+
+    public static $rules = [
+        'task' => 'required',
+        'due_date' => ' nullable|date',
+    ];
+
+    public static $messagees = [
+        'task.required' => 'タスクの内容を入力してください',
     ];
 }

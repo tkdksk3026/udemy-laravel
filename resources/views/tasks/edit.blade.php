@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +14,6 @@
             -webkit-font-smoothing: antialiased;
             background-color: #fcfcfc;
         }
-
         /* 日付入力のアイコン調整（ブラウザデフォルトの上書き） */
         input[type="datetime-local"]::-webkit-calendar-picker-indicator {
             background: transparent;
@@ -38,47 +36,62 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
         .animate-fade-in {
             animation: fadeIn 0.3s ease-out forwards;
         }
         .animate-slide-up {
             animation: slideUp 0.4s ease-out forwards;
         }
+        .animate-shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
     </style>
 </head>
-
 <body class="text-gray-800 min-h-screen flex items-center justify-center p-4 selection:bg-gray-200">
 
     <!-- Main Container -->
     <main class="w-full max-w-lg animate-fade-in relative">
-
+        
         <!-- Header Area -->
         <header class="mb-8 px-2">
             <div class="flex items-center gap-4">
                 <a href="index.html" class="text-gray-400 hover:text-[#1a1a1a] transition-colors" aria-label="戻る">
                     <i class="fa-solid fa-arrow-left text-lg"></i>
                 </a>
-                <h1 class="text-lg font-medium tracking-wide text-[#1a1a1a]">New Task</h1>
+                <h1 class="text-lg font-medium tracking-wide text-[#1a1a1a]">Edit Task</h1>
             </div>
         </header>
 
         <!-- Input Form -->
         <form action="" method="post" class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8 animate-slide-up">
-            @csrf
+          @csrf
+            <!-- Task Content Input (Error State) -->
             <div class="mb-8 group">
                 <label for="task-content" class="block text-xs font-bold tracking-widest uppercase mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-exclamation"></i>
                     Task Name
                 </label>
-                <div class="relative animate-shake">
-                    <input type="text" name="task" id="task-content" class="block w-full py-3 px-4 border-2 rounded-xl text-[#1a1a1a] focus:outline-none text-lg font-light" placeholder="例: デザインカンプの作成" autofocus value="{{old('task')}}">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        name="task"
+                        id="task-content" 
+                        class="block w-full py-3 px-4 border-1 rounded-xl text-[#1a1a1a] focus:outline-none transition-all duration-300 text-lg font-light"
+                        placeholder="例: デザインカンプの作成"
+                        autofocus
+                        value="{{ $task->task }}"
+                    >
                     <!-- Error Message -->
-                    @error('task')
-                    <p class="absolute -bottom-6 left-1 text-xs text-error text-red-500 font-medium">
-                        {{ $message }}
+                    <!--
+                    <p class="absolute -bottom-6 left-1 text-xs text-[#ef4444] font-medium">
+                        タスクの内容を入力してください
                     </p>
-                    @enderror
-                   
+                    -->
                 </div>
             </div>
 
@@ -89,7 +102,13 @@
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fa-regular fa-calendar text-gray-400"></i>
                     </div>
-                    <input type="datetime-local" id="due-date" name="due_date" class="block w-full pl-12 pr-4 py-3 bg-transparent border border-transparent rounded-xl text-gray-700 placeholder-gray-400 focus:bg-white focus:border-gray-200 focus:ring-2 focus:ring-gray-100 focus:outline-none transition-all duration-300 font-light appearance-none" value="{{old('due_date')}}">
+                    <input 
+                        type="datetime-local" 
+                        id="due-date" 
+                        name="deadline"
+                        class="block w-full pl-12 pr-4 py-3 bg-transparent border border-transparent rounded-xl text-gray-700 placeholder-gray-400 focus:bg-white focus:border-gray-200 focus:ring-2 focus:ring-gray-100 focus:outline-none transition-all duration-300 font-light appearance-none"
+                        value="{{ $task->due_date }}"
+                    >
                     <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
                         <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
                     </div>
@@ -110,5 +129,4 @@
     </main>
 
 </body>
-
 </html>
