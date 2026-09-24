@@ -61,7 +61,7 @@
         <!-- Header Area -->
         <header class="mb-8 px-2">
             <div class="flex items-center gap-4">
-                <a href="index.html" class="text-gray-400 hover:text-[#1a1a1a] transition-colors" aria-label="戻る">
+                <a href="{{ route('tasks.index') }}" class="text-gray-400 hover:text-[#1a1a1a] transition-colors" aria-label="戻る">
                     <i class="fa-solid fa-arrow-left text-lg"></i>
                 </a>
                 <h1 class="text-lg font-medium tracking-wide text-[#1a1a1a]">Edit Task</h1>
@@ -84,14 +84,14 @@
                         class="block w-full py-3 px-4 border-1 rounded-xl text-[#1a1a1a] focus:outline-none transition-all duration-300 text-lg font-light"
                         placeholder="例: デザインカンプの作成"
                         autofocus
-                        value="{{ $task->task }}"
+                        value="{{ old('task',$task->task) }}"
                     >
                     <!-- Error Message -->
-                    <!--
+                    @error('task')
                     <p class="absolute -bottom-6 left-1 text-xs text-[#ef4444] font-medium">
-                        タスクの内容を入力してください
+                        {{ $message }}
                     </p>
-                    -->
+                    @enderror
                 </div>
             </div>
 
@@ -105,9 +105,9 @@
                     <input 
                         type="datetime-local" 
                         id="due-date" 
-                        name="deadline"
+                        name="due_date"
                         class="block w-full pl-12 pr-4 py-3 bg-transparent border border-transparent rounded-xl text-gray-700 placeholder-gray-400 focus:bg-white focus:border-gray-200 focus:ring-2 focus:ring-gray-100 focus:outline-none transition-all duration-300 font-light appearance-none"
-                        value="{{ $task->due_date }}"
+                        value="{{ old('due_date', $task->due_date)}}"
                     >
                     <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
                         <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
